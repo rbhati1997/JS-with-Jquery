@@ -1,6 +1,53 @@
 $(document).ready(function(){
   var event_update_this;
 
+// Custom name validation method.
+$.validator.addMethod("nameRegEx", function(value, element) {
+    var nameReg = /^[a-zA-Z]+$/;
+    if (nameReg.test(value)) {
+        return true;
+    } else {
+        return false;
+    };
+    }, "Please enter valid string.");
+
+// Custom age validation method.
+$.validator.addMethod("ageRegEx", function(value, element) {
+    var ageReg = /^[0-9]+$/;
+    if (ageReg.test(value)) {
+        return true;
+    } else {
+        return false;
+    };
+    }, "Please enter valid integer.");
+
+
+// Function to validate form data.
+   $("#myform").validate({
+
+    rules: {
+        name: {
+        required: true,
+        minlength: 3,
+        nameRegEx: true,
+        },
+        age: {
+        required: true,
+        ageRegEx: true,
+        },
+
+    },
+    messages: {
+        name: {
+            required: "Please enter your name.",
+            minlength: "Your name must be at least 3 characters long.",
+        },
+        age: {
+        required: "Please enter your age.",
+        }
+    }
+  });
+
 // Function to add data in table.
   $("#add_data_btn").click(function(){
 
@@ -9,9 +56,9 @@ $(document).ready(function(){
     var age = $("#age").val();
     var rowCount = $('#myTable tr').length + 1;
 
-    var valid = validateData(name, age);
+//    var valid = validateData(name, age);
 
-    if(valid) {
+  if( $("#myform").valid() ) {
         $('#myTable').append(
                 '<tr>'
                 +'<td id="order">'+rowCount+'</td>'
@@ -121,23 +168,23 @@ $(document).ready(function(){
         });
     });
 
-// Function for form validation.
-  function validateData(name, age) {
-    valid = true;
-    nameReg = /^[a-zA-Z]+$/;
-    ageReg = /^[0-9]+$/;
-    if (nameReg.test(name) == false) {
-        alert ("please enter valid string for name.");
-        valid = false;
-    }
-
-    if (valid != false && ageReg.test(age) == false) {
-        alert ("please enter valid number for age.");
-         valid = false;
-    }
-
-    return valid;
-  }
+//// Function for form validation.
+//  function validateData(name, age) {
+//    valid = true;
+//    nameReg = /^[a-zA-Z]+$/;
+//    ageReg = /^[0-9]+$/;
+//    if (nameReg.test(name) == false) {
+//        alert ("please enter valid string for name.");
+//        valid = false;
+//    }
+//
+//    if (valid != false && ageReg.test(age) == false) {
+//        alert ("please enter valid number for age.");
+//         valid = false;
+//    }
+//
+//    return valid;
+//  }
 
 
 
